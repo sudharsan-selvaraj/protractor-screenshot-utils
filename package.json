@@ -4,9 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean" : "rimraf ./dist && rimraf ./target",
-    "build" : "npm run clean && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rimraf dist && rimraf coverage && rimraf .nyc_output && rimraf reports && rimraf screenshots/diff/*",
+    "setup": "npm run build && webdriver-manager update",
+    "server": "webdriver-manager start",
+    "build": "npm run clean && tsc",
+    "test": "npm run unit && npm run e2e",
+    "unit": "nyc --reporter=lcov jasmine ./test/unit/*.spec.js",
+    "e2e": "protractor ./test/e2e/conf.js",
+    "commit": "npx git-cz"
   },
   "author": "Sudharsan Selvaraj <sudharsanselvaraj.c@gmail.com> (https://github.com/sudharsan-selvaraj/)",
   "license": "ISC",
@@ -16,11 +21,26 @@
   "devDependencies": {
     "@types/node": "^10.5.7",
     "@types/protractor": "^4.0.0",
+    "commitizen": "^2.10.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "fs-extra": "^7.0.0",
+    "jasmine": "^3.2.0",
+    "klaw-sync": "^4.0.0",
+    "looks-same": "^3.3.0",
+    "nyc": "^12.0.2",
+    "protractor": "^5.4.0",
     "protractor-jasmine2-screenshot-reporter": "^0.5.0",
     "rimraf": "^2.6.2",
-    "typescript": "^3.0.1"
+    "selenium-webdriver": "^4.0.0-alpha.1",
+    "typescript": "^3.0.1",
+    "webdriverio": "^4.13.1"
   },
   "peerDependencies": {
     "protractor": "^4.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

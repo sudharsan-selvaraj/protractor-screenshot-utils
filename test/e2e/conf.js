@@ -13,7 +13,7 @@ var reporter = new HtmlScreenshotReporter({
 });
 
 exports.config = {
-    specs: ["test.js"],
+    specs: ["e2e.spec.js"],
     jasmineNodeOpts: {
         defaultTimeoutInterval: 1200000,
     },
@@ -38,7 +38,7 @@ exports.config = {
 
         global.fullPageScreenScreenshot = new screenShotUtil({
             browserInstance: browser,
-            setAsDefaultScreenshotMethod: browser.params.MAKE_FULLPAGE_SCREENSHOT_DEFAULT
+            setAsDefaultScreenshotMethod: false
         });
     },
 

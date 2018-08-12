@@ -1,5 +1,5 @@
-var fse = require('fs-extra');
-var klawSync = require('klaw-sync');
+var fs = require('fs');
+
 var screenShotUtils = require("../../dist/index.js").ProtractorScreenShotUtils;
 
 var base64value = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABA4AAAEeCAYAAAAKMFd8AAAMGGlDQ1BJQ0MgUHJvZmlsZQAASImVVwdUU0kXnldSCAktEOmE3g";
@@ -116,6 +116,34 @@ describe("Screenshot utils unit test", function () {
                 })
             });
 
+        });
+
+    });
+
+    describe("Test saveTo and element option in takeScreenshot method", function () {
+        var screenShotUtilsObject, filename = "./out.png";
+        beforeAll(function () {
+            screenShotUtilsObject = new screenShotUtils({
+                browserInstance: browser,
+            });
+            screenShotUtilsObject.takeScreenshot({
+                saveTo: filename,
+                element : browser.$("locator")
+            });
+        });
+
+        afterAll(function () {
+            if (fs.existsSync(filename)) {
+                fs.unlinkSync(filename);
+            }
+        });
+
+        it("new file should be created", function () {
+            expect(fs.existsSync(filename)).toBeTruthy();
+        });
+
+        it("$ function should not be called", function () {
+            expect(browser.$).toHaveBeenCalledWith("locator");
         });
 
     });

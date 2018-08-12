@@ -6,6 +6,12 @@ interface configOptions {
     setAsDefaultScreenshotMethod?:boolean
 }
 
+/**
+ *  Options that can to be passed as parameter to `takeScreeshot` method.
+ *  1. element(OPTIONAL) - to take screenshot of any particular element.
+ *  2. dimensions(OPTIONAL) - to crop the screen shot based on x,y,width and height of the screnshot.
+ *  3. saveTo(OPTIONAL) - file path to automatically save the processed screenshot.
+ */
 interface screenShotOptions {
     element?:ElementFinder;
     dimensions?:{
@@ -18,6 +24,29 @@ interface screenShotOptions {
 }
 
 let html2canvasPath = require.resolve("html2canvas").replace("/npm/index.js", "/html2canvas.min.js");
+
+/**
+ * This plugin does few things:
+ *   1. Takes a fullpage screenshot of the webpage.
+ *   2. Takes a screenshot of any particular element.
+ *   3. Crop the screen for webpage or element with dimensions.
+ *   4. Make fullpage screenshot as default behaviour of browser.takeScreenshot();
+ *
+ *    example config.js:
+ *    ---------------------------------------------------
+ *    var screenShotUtils = require("protractor-screenshot-utils").ProtractorScreenShotUtils.;
+ *    exports.config = {
+ *
+ *       onPrepare: function() {
+ *           global.screenShotUtils = new screenShotUtils({
+ *             browserInstance : browser,
+ *             setAsDefaultScreenshotMethod : true // Make fullpage screenshot as default behaviour browser.takeScreenshot()
+ *           });
+ *       }
+ *     }
+ *    @author Sudharsan Selvaraj
+ *    @created August 12 2018
+ */
 class ProtractorScreenShotUtils {
 
     private browser:ProtractorBrowser;
@@ -25,6 +54,9 @@ class ProtractorScreenShotUtils {
     private originalScreenshotMethod:any;
 
     constructor(config:configOptions) {
+        if(!config || !config.browserInstance) {
+            throw new Error("browser object is required");
+        }
         this.browser = config.browserInstance;
         if (config.setAsDefaultScreenshotMethod == true) {
             this.makeAsDefault();
@@ -61,23 +93,21 @@ class ProtractorScreenShotUtils {
                  })`;
 
         return currentContext.executeAsyncScript(injectionScript, element.getWebElement(), dimensions).then(function (base64String:string) {
-            base64String = base64String.replace(/^data:image\/png;base64,/, "")
-            if(!outputPath) {
-                return base64String;
-            } else {
+            base64String = base64String.replace(/^data:image\/png;base64,/, "");
+
+            /*if output path is given, then save the screenshot as file*/
+            if(outputPath) {
                 fs.writeFileSync(outputPath,base64String,'base64');
             }
+
+            return base64String;
         });
 
     }
 
-    public restoreToDefault() {
-        if (this.originalScreenshotMethod && this.isDefaultScreenshotMethod) {
-            this.browser.takeScreenshot = this.originalScreenshotMethod.bind(this.browser);
-            this.isDefaultScreenshotMethod = false;
-        }
-    }
-
+    /**
+     * Method to set Full page screen shot as default behaviour of browser.takeScreenShot()
+     */
     public makeAsDefault() {
         if (!this.isDefaultScreenshotMethod) {
             this.originalScreenshotMethod = this.browser.takeScreenshot;
@@ -85,6 +115,16 @@ class ProtractorScreenShotUtils {
             this.isDefaultScreenshotMethod = true;
         }
     }
+
+    /**
+     * Method to reset Full page screen shot behaviour of browser.takeScreenShot()
+     */
+    public resetToDefault() {
+        if (this.originalScreenshotMethod && this.isDefaultScreenshotMethod) {
+            this.browser.takeScreenshot = this.originalScreenshotMethod.bind(this.browser);
+            this.isDefaultScreenshotMethod = false;
+        }
+    }
 }
 
-export {ProtractorScreenShotUtils};
+export {ProtractorScreenShotUtils,configOptions,screenShotOptions};

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "declaration": true,
+    "rootDir": "./lib",
+    "outDir": "./dist"
+  },
+  "types" :[
+    "jasmine-expect"
+  ],
+  "exclude" : [
+    "node_modules",
+    "built"
+  ]
+}

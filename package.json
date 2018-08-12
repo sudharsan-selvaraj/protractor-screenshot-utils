@@ -1,0 +1,26 @@
+{
+  "name": "protractor-screenshot-utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean" : "rimraf ./dist && rimraf ./target",
+    "build" : "npm run clean && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sudharsan Selvaraj <sudharsanselvaraj.c@gmail.com> (https://github.com/sudharsan-selvaraj/)",
+  "license": "ISC",
+  "dependencies": {
+    "html2canvas": "^1.0.0-alpha.12"
+  },
+  "devDependencies": {
+    "@types/node": "^10.5.7",
+    "@types/protractor": "^4.0.0",
+    "protractor-jasmine2-screenshot-reporter": "^0.5.0",
+    "rimraf": "^2.6.2",
+    "typescript": "^3.0.1"
+  },
+  "peerDependencies": {
+    "protractor": "^4.0.0"
+  }
+}

@@ -13,8 +13,10 @@ before_install:
  - sudo dpkg -i google-chrome*.deb
 before_script:
   - npm install
+  - npm install codecov -g
   - npm run setup
   - sleep 10
 after_success:
   - npm run coverage
   - npm run lint
+  - codecov

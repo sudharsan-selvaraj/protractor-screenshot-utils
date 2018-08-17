@@ -21,9 +21,9 @@
   <th>Element Screenshot</th>
 <tr>
 <tr>
-  <td valign="top"><kbd><img src="screenshots/chrome/defaultpage.png"><kbd></td>
-  <td valign="top"><img src="screenshots/chrome/fullpage.png"></td>
-  <td valign="top">_____________________________________<img src="screenshots/chrome/element.png">_____________________________________</td>
+  <td valign="top"><img src="https://raw.githubusercontent.com/sudharsan-selvaraj/protractor-screenshot-utils/master/screenshots/chrome/defaultpage.png"></td>
+  <td valign="top"><img src="https://raw.githubusercontent.com/sudharsan-selvaraj/protractor-screenshot-utils/master/screenshots/chrome/fullpage.png"></td>
+  <td valign="top">_____________________________________<img src="https://raw.githubusercontent.com/sudharsan-selvaraj/protractor-screenshot-utils/master/screenshots/chrome/element.png">_____________________________________</td>
 <tr>
 </table>
 

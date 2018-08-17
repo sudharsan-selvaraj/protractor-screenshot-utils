@@ -109,9 +109,9 @@ describe("Test Screenshot utils", function () {
     it("Test Reporter screen shot", function (done) {
         protractor.promise
             .all([
-                compareImage("Test default screen shot method.png", "defaultpage.png"),
-                compareImage("Test Full page screen shot method using browser object.png", "fullpage.png"),
-                compareImage("Test screenshot crop functionality.png", "defaultpage.png")
+                compareImage( browser.name+"_"+"Test default screen shot method.png", "defaultpage.png"),
+                compareImage( browser.name+"_"+"Test Full page screen shot method using browser object.png", "fullpage.png"),
+                compareImage( browser.name+"_"+"Test screenshot crop functionality.png", "defaultpage.png")
             ]).then(function (result) {
             expect(result[0]).toEqual(true, "Test default screen shot method");
             expect(result[1]).toEqual(true, "Test Full page screen shot method using browser object");

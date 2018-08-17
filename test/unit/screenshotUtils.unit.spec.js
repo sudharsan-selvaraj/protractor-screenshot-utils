@@ -10,6 +10,11 @@ describe("Screenshot utils unit test", function () {
         takeScreenshot: function () {
             return "Default Screenshot method"
         },
+        executeScript : function () {
+            return new Promise(function (resolve, reject) {
+                return resolve("")
+            });
+        },
         executeAsyncScript: function () {
             return new Promise(function (resolve, reject) {
                 return resolve(base64value)

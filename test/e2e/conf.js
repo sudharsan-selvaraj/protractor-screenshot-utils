@@ -8,7 +8,7 @@ var reporter = new HtmlScreenshotReporter({
     captureOnlyFailedSpecs: false,
     inlineImages: true,
     pathBuilder: function (currentSpec, suites, browserCapabilities) {
-        return currentSpec.description;
+        return browserCapabilities.get('browserName') + "_" + currentSpec.description;
     }
 });
 
@@ -30,15 +30,17 @@ exports.config = {
 
 
     onPrepare: function () {
-        browser.manage().window().setSize(1050,900);
+        browser.manage().window().setSize(1050, 900);
         jasmine.getEnv().addReporter(reporter);
-        browser.params.reportPath = path.join(__dirname, "../../reports/screenshots");
-        browser.params.screenShotsPath = path.join(__dirname, "../../screenshots");
-        browser.params.diffPath = path.join(browser.params.screenShotsPath,"/diff");
-
         global.fullPageScreenScreenshot = new screenShotUtil({
             browserInstance: browser,
             setAsDefaultScreenshotMethod: false
+        });
+        return browser.getCapabilities().then(function (capabilites) {
+            browser.name = capabilites.get('browserName')
+            browser.params.reportPath = path.join(__dirname, "../../reports/screenshots");
+            browser.params.screenShotsPath = path.join(__dirname, "../../screenshots/" + browser.name);
+            browser.params.diffPath = path.join(browser.params.screenShotsPath, "/diff");
         });
     },
 

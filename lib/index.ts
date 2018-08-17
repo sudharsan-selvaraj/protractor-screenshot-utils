@@ -54,7 +54,7 @@ class ProtractorScreenShotUtils {
     private originalScreenshotMethod:any;
 
     constructor(config:configOptions) {
-        if(!config || !config.browserInstance) {
+        if (!config || !config.browserInstance) {
             throw new Error("browser object is required");
         }
         this.browser = config.browserInstance;
@@ -68,8 +68,8 @@ class ProtractorScreenShotUtils {
             element:ElementFinder = options.element ? options.element : currentContext.$("body"),
             dimensions = options.dimensions || {},
             outputPath = options.saveTo || null,
-            canvasScript = fs.readFileSync(html2canvasPath),
-            injectionScript = canvasScript +
+            html2canvasScript = fs.readFileSync(html2canvasPath, 'utf8'),
+            injectionScript =
                 `var callBack = arguments[arguments.length -1];
                 var dimensions = arguments[1];
                 html2canvas(arguments[0]).then(function(canvas){
@@ -92,15 +92,23 @@ class ProtractorScreenShotUtils {
               
                  })`;
 
-        return currentContext.executeAsyncScript(injectionScript, element.getWebElement(), dimensions).then(function (base64String:string) {
-            base64String = base64String.replace(/^data:image\/png;base64,/, "");
+        return currentContext.executeScript(`var scriptEle = document.createElement("script");
+                scriptEle.type = "text/javascript";
+                scriptEle.innerText = function injectScript() { ${html2canvasScript} };
+                document.body.appendChild(scriptEle);
+                document.body.appendChild(scriptEle);
+                injectScript();
+                `).then(function () {
+            return currentContext.executeAsyncScript(injectionScript, element.getWebElement(), dimensions).then(function (base64String:string) {
+                base64String = base64String.replace(/^data:image\/png;base64,/, "");
 
-            /*if output path is given, then save the screenshot as file*/
-            if(outputPath) {
-                fs.writeFileSync(outputPath,base64String,'base64');
-            }
+                /*if output path is given, then save the screenshot as file*/
+                if (outputPath) {
+                    fs.writeFileSync(outputPath, base64String, 'base64');
+                }
 
-            return base64String;
+                return base64String;
+            });
         });
 
     }
@@ -127,4 +135,4 @@ class ProtractorScreenShotUtils {
     }
 }
 
-export {ProtractorScreenShotUtils,configOptions,screenShotOptions};
+export {ProtractorScreenShotUtils, configOptions, screenShotOptions};

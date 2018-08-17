@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/sudharsan-selvaraj/protractor-screenshot-utils.svg?branch=master)](https://travis-ci.org/sudharsan-selvaraj/protractor-screenshot-utils)
-[![Code Coverage](https://codecov.io/gh/sudharsan-selvaraj/protractor-screenshot-utils/branch/feature%2Ftest_branch/graph/badge.svg)](https://codecov.io/gh/sudharsan-selvaraj/protractor-screenshot-utils/branch/master)
+[![Code Coverage](https://codecov.io/gh/sudharsan-selvaraj/protractor-screenshot-utils/branch/master/graph/badge.svg)](https://codecov.io/gh/sudharsan-selvaraj/protractor-screenshot-utils/branch/master)
 
 # protractor-screenshot-utils
 
@@ -35,7 +35,7 @@ npm install protractor-screenshoter-utils
 
 # Usage
 
-Add this plugin to the protractor config file:
+Add add the below code to protractor config file:
 
 Example:
 

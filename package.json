@@ -14,6 +14,10 @@
     "commit": "npx git-cz"
   },
   "author": "Sudharsan Selvaraj <sudharsanselvaraj.c@gmail.com> (https://github.com/sudharsan-selvaraj/)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sudharsan-selvaraj/protractor-screenshot-utils.git"
+  },
   "license": "ISC",
   "dependencies": {
     "html2canvas": "^1.0.0-alpha.12"

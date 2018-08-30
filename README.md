@@ -30,7 +30,7 @@
 # How to install
 
 ```
-npm install protractor-screenshoter-utils
+npm install protractor-screenshot-utils
 ```
 
 # Usage
@@ -41,7 +41,7 @@ Example:
 
 *protractor.config.js*
 ```javascript
-var screenShotUtils = require("protractor-screenshoter-utils").ProtractorScreenShotUtils;
+var screenShotUtils = require("protractor-screenshot-utils").ProtractorScreenShotUtils;
 exports.config = {
     framework: 'jasmine2',
       onPrepare: function() {

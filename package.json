@@ -1,6 +1,6 @@
 {
   "name": "protractor-screenshot-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple utility to capture fullpage screenshot, screenshot of any element and crop the screenshot by any screen coordinates from your e2e protractor tests out-of-box",
   "main": "dist/index.js",
   "scripts": {

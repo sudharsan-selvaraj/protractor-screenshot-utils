@@ -8,9 +8,9 @@
     "setup": "npm run build && webdriver-manager update",
     "server": "webdriver-manager start",
     "build": "npm run clean && tsc",
-    "test": "npm run unit && npm run e2e",
+    "test": "npm run build && npm run unit && npm run e2e",
     "unit": "nyc --reporter=lcov jasmine ./test/unit/*.spec.js",
-    "e2e": "protractor ./test/e2e/conf.js",
+    "e2e": "node_modules/protractor/bin/protractor ./test/e2e/conf.js",
     "commit": "npx git-cz"
   },
   "author": "Sudharsan Selvaraj <sudharsanselvaraj.c@gmail.com> (https://github.com/sudharsan-selvaraj/)",

@@ -89,15 +89,12 @@ class ProtractorScreenShotUtils {
                      } else {
                         callBack(canvas.toDataURL())
                      }
-              
                  })`;
 
         return currentContext.executeScript(`var scriptEle = document.createElement("script");
                 scriptEle.type = "text/javascript";
-                scriptEle.innerText = function injectScript() { ${html2canvasScript} };
+                scriptEle.innerText = ${html2canvasScript};
                 document.body.appendChild(scriptEle);
-                document.body.appendChild(scriptEle);
-                injectScript();
                 `).then(function () {
             return currentContext.executeAsyncScript(injectionScript, element.getWebElement(), dimensions).then(function (base64String:string) {
                 base64String = base64String.replace(/^data:image\/png;base64,/, "");

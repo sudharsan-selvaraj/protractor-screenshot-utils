@@ -11,7 +11,6 @@ interface configOptions {
  *  1. element(OPTIONAL) - to take screenshot of any particular element.
  *  2. dimensions(OPTIONAL) - to crop the screen shot based on x,y,width and height of the screnshot.
  *  3. saveTo(OPTIONAL) - file path to automatically save the processed screenshot.
- *  4. proxyUrl(OPTIONAL) - proxy URL to be used for html2canvas - to load cross-origin images
  */
 interface screenShotOptions {
     element?:ElementFinder;
@@ -21,8 +20,7 @@ interface screenShotOptions {
         width:number,
         height:number
     },
-    saveTo?:string,
-    proxyUrl?:string
+    saveTo?:string
 }
 
 let html2canvasPath = require.resolve("html2canvas").replace("/npm/index.js", "/html2canvas.min.js");
@@ -70,13 +68,12 @@ class ProtractorScreenShotUtils {
             element:ElementFinder = options.element ? options.element : currentContext.$("body"),
             dimensions = options.dimensions || {},
             outputPath = options.saveTo || null,
-            proxyUrl = options.proxyUrl || null,
             html2canvasScript = fs.readFileSync(html2canvasPath, 'utf8'),
             injectionScript =
                 `var callBack = arguments[arguments.length -1];
                 var dimensions = arguments[1];
-                var proxyUrl = arguments[2];
-                html2canvas(arguments[0],{useCors: true, proxy: proxyUrl}).then(function(canvas){
+                html2canvas(arguments[0], {allowTaint : true, useCORS: true}).then(function(canvas){
+                     
                      if(Object.keys(dimensions).length == 4) {
                         console.log("Success");
                         var croppedCanvas = document.createElement("canvas");
@@ -94,12 +91,8 @@ class ProtractorScreenShotUtils {
                      }
                  })`;
 
-        return currentContext.executeScript(`var scriptEle = document.createElement("script");
-                scriptEle.type = "text/javascript";
-                scriptEle.innerText = ${html2canvasScript};
-                document.body.appendChild(scriptEle);
-                `).then(function () {
-            return currentContext.executeAsyncScript(injectionScript, element.getWebElement(), dimensions, proxyUrl).then(function (base64String:string) {
+        return currentContext.executeScript(`${html2canvasScript}`).then(function () {
+            return currentContext.executeAsyncScript(injectionScript, element.getWebElement(), dimensions).then(function (base64String:string) {
                 base64String = base64String.replace(/^data:image\/png;base64,/, "");
 
                 /*if output path is given, then save the screenshot as file*/
@@ -108,6 +101,8 @@ class ProtractorScreenShotUtils {
                 }
 
                 return base64String;
+            }).catch(function (error) {
+                console.log(error)
             });
         });
 

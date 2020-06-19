@@ -120,3 +120,20 @@ global.screenShotUtils = new screenShotUtils({
 ```
 And you can now take fullpage screen shot, element screenshot using browser.takeScreenshot() with all options given in above examples.
 
+##Leverage node proxy (html2canvas-proxy-nodejs) to fetch cross-origin images: 
+
+```javascript
+screenShotUtils.takeScreenshot({
+    element : element(by.id("main-container")),
+    dimensions : {
+        x:20, //starting x point
+        y:40, //startng y point
+        width : 200,
+        height: 200
+    },
+    saveTo: "croppedElementImage.png", 
+    proxyUrl: "http://localhost:3000"
+})
+```
+
+

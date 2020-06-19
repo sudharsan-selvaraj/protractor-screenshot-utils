@@ -12,6 +12,7 @@ interface screenShotOptions {
         height: number;
     };
     saveTo?: string;
+    proxyUrl?: string;
 }
 declare class ProtractorScreenShotUtils {
     private browser;

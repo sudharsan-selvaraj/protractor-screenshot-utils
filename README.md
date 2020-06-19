@@ -132,26 +132,8 @@ screenShotUtils.takeScreenshot({
         height: 200
     },
     saveTo: "croppedElementImage.png", 
-    proxyUrl: "http://localhost:3000"
-})
-```
-
-
-##Leverage CORS filter/node proxy (html2canvas-proxy-nodejs) to fetch cross-origin images: 
-
-```javascript
-screenShotUtils.takeScreenshot({
-    element : element(by.id("main-container")),
-    dimensions : {
-        x:20, //starting x point
-        y:40, //startng y point
-        width : 200,
-        height: 200
-    },
-    saveTo: "croppedElementImage.png",
     proxyUrl: "http://localhost:3000",
     useCORS: false
 })
 ```
-
 

@@ -72,7 +72,7 @@ class ProtractorScreenShotUtils {
             injectionScript =
                 `var callBack = arguments[arguments.length -1];
                 var dimensions = arguments[1];
-                html2canvas(arguments[0]).then(function(canvas){
+                html2canvas(arguments[0], {allowTaint : true, useCORS: true}).then(function(canvas){
                      
                      if(Object.keys(dimensions).length == 4) {
                         console.log("Success");
@@ -91,11 +91,7 @@ class ProtractorScreenShotUtils {
                      }
                  })`;
 
-        return currentContext.executeScript(`var scriptEle = document.createElement("script");
-                scriptEle.type = "text/javascript";
-                scriptEle.innerText = ${html2canvasScript};
-                document.body.appendChild(scriptEle);
-                `).then(function () {
+        return currentContext.executeScript(`${html2canvasScript}`).then(function () {
             return currentContext.executeAsyncScript(injectionScript, element.getWebElement(), dimensions).then(function (base64String:string) {
                 base64String = base64String.replace(/^data:image\/png;base64,/, "");
 
@@ -105,6 +101,8 @@ class ProtractorScreenShotUtils {
                 }
 
                 return base64String;
+            }).catch(function (error) {
+                console.log(error)
             });
         });
 

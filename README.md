@@ -120,7 +120,9 @@ global.screenShotUtils = new screenShotUtils({
 ```
 And you can now take fullpage screen shot, element screenshot using browser.takeScreenshot() with all options given in above examples.
 
-##Leverage node proxy (html2canvas-proxy-nodejs) to fetch cross-origin images: 
+##Override default html2canvas options: 
+
+You can override the default html2canvas options using the canvasOptions attribute. Refer [here](https://html2canvas.hertzen.com/configuration/) for the list of options.
 
 ```javascript
 screenShotUtils.takeScreenshot({
@@ -132,8 +134,11 @@ screenShotUtils.takeScreenshot({
         height: 200
     },
     saveTo: "croppedElementImage.png", 
-    proxyUrl: "http://localhost:3000",
-    useCORS: false
-})
+    canvasOptions: {
+      allowTaint: true,
+      useCORS: false,
+      proxy: "http://localhost:3000"
+    }
+});
 ```
 

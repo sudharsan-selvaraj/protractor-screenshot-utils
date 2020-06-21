@@ -11,6 +11,7 @@ interface configOptions {
  *  1. element(OPTIONAL) - to take screenshot of any particular element.
  *  2. dimensions(OPTIONAL) - to crop the screen shot based on x,y,width and height of the screnshot.
  *  3. saveTo(OPTIONAL) - file path to automatically save the processed screenshot.
+ *  4. canvasOptions(OPTIONAL) - options to pass to html2canvas
  */
 interface screenShotOptions {
     element?:ElementFinder;
@@ -20,7 +21,36 @@ interface screenShotOptions {
         width:number,
         height:number
     },
-    saveTo?:string
+    saveTo?:string,
+    canvasOptions?:canvasOptions
+}
+
+/**
+ *  Options that can to be passed as parameter to `html2canvas` method.
+ *  Refer to https://html2canvas.hertzen.com/configuration for usage
+ */
+
+interface canvasOptions {
+    allowTaint?: boolean,
+    backgroundColor?: string,
+    canvas?: HTMLCanvasElement,
+    foreignObjectRendering?: boolean,
+    imageTimeout?: number,
+    ignoreElements?: (element: Element) => boolean;
+    logging?: boolean,
+    onclone?: (document: Document) => void,
+    proxy?: string,
+    removeContainer?: boolean,
+    scale?: number,
+    useCORS?: boolean,
+    width?: number,
+    height?: number,
+    x?: number,
+    y?: number,
+    scrollX?: number,
+    scrollY?: number,
+    windowWidth?: number,
+    windowHeight?: number
 }
 
 let html2canvasPath = require.resolve("html2canvas").replace("/npm/index.js", "/html2canvas.min.js");
@@ -68,11 +98,13 @@ class ProtractorScreenShotUtils {
             element:ElementFinder = options.element ? options.element : currentContext.$("body"),
             dimensions = options.dimensions || {},
             outputPath = options.saveTo || null,
+            canvasOptions = options.canvasOptions || {},
             html2canvasScript = fs.readFileSync(html2canvasPath, 'utf8'),
             injectionScript =
                 `var callBack = arguments[arguments.length -1];
                 var dimensions = arguments[1];
-                html2canvas(arguments[0], {allowTaint : true, useCORS: true}).then(function(canvas){
+                var canvasOptions = arguments[2];
+                html2canvas(arguments[0],canvasOptions).then(function(canvas){
                      
                      if(Object.keys(dimensions).length == 4) {
                         console.log("Success");
@@ -92,7 +124,7 @@ class ProtractorScreenShotUtils {
                  })`;
 
         return currentContext.executeScript(`${html2canvasScript}`).then(function () {
-            return currentContext.executeAsyncScript(injectionScript, element.getWebElement(), dimensions).then(function (base64String:string) {
+            return currentContext.executeAsyncScript(injectionScript, element.getWebElement(), dimensions, canvasOptions).then(function (base64String:string) {
                 base64String = base64String.replace(/^data:image\/png;base64,/, "");
 
                 /*if output path is given, then save the screenshot as file*/
